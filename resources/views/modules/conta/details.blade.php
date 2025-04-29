@@ -95,71 +95,83 @@
 
     <div class="card mt-4">
         <div class="card-body">
-            <div class="row mb-4">
-                <div class="col-md-12">
-                    <h2>Transferência</h2>
-                </div>
-                <div class="col-md-12">
-                    <x-adminlte-select2 name="idContaBeneficiario" label="Conta Beneficiário" label-class="text-lightblue"
-                        igroup-size="lg" data-placeholder="Selecione uma opção...">
-                        <option value="pessoas">Selecione</option>
-                        @foreach($response?->pessoas as $chave => $valor)
-                        <option value="{{ $chave }}"
-                            @selected(old('id', $valor?->id)==$chave)>
-                            {{ $valor?->nome }}
-                        </option>
-                        @endforeach
-                    </x-adminlte-select2>
+            <form>
+                @csrf
+                @method('PUT')
+
+                <div class="row mb-2">
+                    <div class="col-md-12">
+                        <h2>Transferência</h2>
+                    </div>
                 </div>
 
-                <div class="col-md-6">
-                    <x-adminlte-select2 name="tipo" label="Tipo de conta" label-class="text-lightblue"
-                        igroup-size="lg" data-placeholder="Selecione uma opção...">
-                        <option value="">Selecione</option>
-                        <option value="corrente" @selected(old('conta', $response?->conta?->tipo ?? '')=='corrente' )>Corrente</option>
-                        <option value="poupanca" @selected(old('conta', $response?->conta?->tipo ?? '')=='poupanca' )>Poupança</option>
-                    </x-adminlte-select2>
+                <div class="row mb-2">
+                    <div class="col-md-12">
+                        <x-adminlte-select2 name="idContaBeneficiario" label="Conta Beneficiário" label-class="text-lightblue"
+                            igroup-size="lg" data-placeholder="Selecione uma opção...">
+                            <option value="pessoas">Selecione</option>
+                            @foreach($response?->pessoas as $chave => $valor)
+                            <option value="{{ $chave }}"
+                                @selected(old('id', $valor?->id)==$chave)>
+                                {{ $valor?->nome }}
+                            </option>
+                            @endforeach
+                        </x-adminlte-select2>
+                    </div>
                 </div>
 
-                <div class="col-md-6">
-                    <label for="numero" class="form-label text-lightblue">Número da Conta</label>
-                    <input type="text"
-                        class="form-control"
-                        id="numero"
-                        name="numero"
-                        value="{{ old('numero', $response?->conta?->numero ?? str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT)) }}"
-                        required>
+                <div class="row mb-2">
+                    <div class="col-md-6">
+                        <x-adminlte-select2 name="tipo" label="Tipo de conta" label-class="text-lightblue"
+                            igroup-size="lg" data-placeholder="Selecione uma opção...">
+                            <option value="">Selecione</option>
+                            <option value="corrente" @selected(old('conta', $response?->conta?->tipo ?? '')=='corrente' )>Corrente</option>
+                            <option value="poupanca" @selected(old('conta', $response?->conta?->tipo ?? '')=='poupanca' )>Poupança</option>
+                        </x-adminlte-select2>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="numero" class="form-label text-lightblue">Número da Conta</label>
+                        <input type="text"
+                            class="form-control"
+                            id="numero"
+                            name="numero"
+                            value="{{ old('numero', $response?->conta?->numero ?? str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT)) }}"
+                            required>
+                    </div>
                 </div>
 
-                <div class="col-md-6 mt-3">
-                    <label for="agencia" class="form-label text-lightblue">Agência</label>
-                    <input type="text"
-                        class="form-control"
-                        id="agencia"
-                        name="agencia"
-                        value="{{ old('agencia', $response?->conta?->agencia ?? str_pad(rand(0, 9999), 4, '0', STR_PAD_LEFT)) }}"
-                        required>
+                <div class="row mb-2">
+                    <div class="col-md-6 mt-3">
+                        <label for="agencia" class="form-label text-lightblue">Agência</label>
+                        <input type="text"
+                            class="form-control"
+                            id="agencia"
+                            name="agencia"
+                            value="{{ old('agencia', $response?->conta?->agencia ?? str_pad(rand(0, 9999), 4, '0', STR_PAD_LEFT)) }}"
+                            required>
+                    </div>
+
+                    <div class="col-md-6 mt-3">
+                        <label for="valor" class="form-label text-lightblue">Valor</label>
+                        <input type="text"
+                            class="form-control"
+                            id="valor"
+                            name="valor"
+                            placeholder="R$ 0,00"
+                            value="{{ old('valor') }}">
+                        @error('valor')
+                        <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
                 </div>
 
-                <div class="col-md-6 mt-3">
-                    <label for="valor" class="form-label text-lightblue">Valor</label>
-                    <input type="text"
-                        class="form-control"
-                        id="valor"
-                        name="valor"
-                        placeholder="R$ 0,00"
-                        value="{{ old('valor') }}">
-                    @error('valor')
-                    <small class="text-danger">{{ $message }}</small>
-                    @enderror
+                <div class="row">
+                    <div class="col-md-12">
+                        <button type="submit" class="btn btn-primary mt-3">Transferir</button>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <button type="submit" class="btn btn-primary mt-3">Transferir</button>
-                </div>
-            </div>
-
+            </form>
         </div>
         @endsection
 

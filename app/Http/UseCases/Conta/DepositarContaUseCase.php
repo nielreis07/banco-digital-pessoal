@@ -4,7 +4,7 @@ namespace App\Http\UseCases\Conta;
 
 use App\Http\DTO\Conta\ContaDto;
 use App\Http\Repositories\Conta\Interface\ContaRepositoryInterface;
-use App\Http\Repositories\Conta\Interface\ExtratoRepositoryInterface;
+use App\Http\Repositories\Extrato\Interface\ExtratoRepositoryInterface;
 use App\Http\UseCases\BaseUseCase;
 use App\Models\Extrato;
 use Illuminate\Support\Facades\DB;

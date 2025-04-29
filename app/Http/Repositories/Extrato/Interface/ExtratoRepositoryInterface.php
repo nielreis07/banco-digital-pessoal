@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Repositories\Conta\Interface;
+namespace App\Http\Repositories\Extrato\Interface;
 
 interface ExtratoRepositoryInterface
 {

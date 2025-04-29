@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Repositories\Conta;
+namespace App\Http\Repositories\Extrato;
 
-use App\Http\Repositories\Conta\Interface\ExtratoRepositoryInterface;
+use App\Http\Repositories\Extrato\Interface\ExtratoRepositoryInterface;
 use App\Models\Extrato;
 
 class ExtratoRepository implements ExtratoRepositoryInterface

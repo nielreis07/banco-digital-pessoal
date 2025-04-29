@@ -27,9 +27,10 @@ class AppServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
-            'App\Http\Repositories\Conta\Interface\ExtratoRepositoryInterface',
-            'App\Http\Repositories\Conta\ExtratoRepository'
+            'App\Http\Repositories\Extrato\Interface\ExtratoRepositoryInterface',
+            'App\Http\Repositories\Extrato\ExtratoRepository'
         );
+        
     }
 
     /**

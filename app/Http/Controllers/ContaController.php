@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\DTO\Conta\ContaDto;
+use App\Http\DTO\Conta\ContaTransferenciaDto;
 use App\Http\UseCases\Conta\ConsultarContaUseCase;
 use App\Http\UseCases\Conta\ExcluirContaUseCase;
 use App\Http\UseCases\Conta\ListarContaUseCase;
 use App\Http\UseCases\Conta\SalvarContaUseCase;
+use App\Http\UseCases\Conta\TransferirContaUseCase;
 use App\Traits\ResponseViewTrait;
 use Illuminate\Http\Request;
 
@@ -19,6 +21,7 @@ class ContaController extends Controller
         private ConsultarContaUseCase $consultarContaUseCase,
         private ExcluirContaUseCase $excluirContaUseCase,
         private ListarContaUseCase $listarUseCase,
+        private TransferirContaUseCase $transferirContaUseCase,
     ) {}
 
     public function listar()
@@ -79,5 +82,21 @@ class ContaController extends Controller
             '',
             200,
         ));
+    }
+
+    public function transferencia(Request $request, $idOrdenador, $idBeneficiario) 
+    {
+        try{
+            $contaTransferenciaDto = new ContaTransferenciaDto(
+                $idOrdenador,
+                $idBeneficiario,
+                $request->input('valor'),
+            );
+            $conta = $this->transferirContaUseCase->execute($contaTransferenciaDto);
+            return redirect()->route('conta.exibir', ['id' => $conta['ordenador']['id'], 'pessoa_id' => $idBeneficiario['beneficiario']['id']])
+                ->with('success', 'Transferência realizada com sucesso!');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
     }
 }

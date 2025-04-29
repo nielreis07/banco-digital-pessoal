@@ -4,11 +4,10 @@ namespace App\Http\UseCases\Conta;
 
 use App\Http\DTO\Conta\ContaTransferenciaDto;
 use App\Http\Repositories\Conta\Interface\ContaRepositoryInterface;
-use App\Http\Repositories\Conta\Interface\ExtratoRepositoryInterface;
+use App\Http\Repositories\Extrato\Interface\ExtratoRepositoryInterface;
 use App\Http\UseCases\BaseUseCase;
 use Illuminate\Support\Facades\DB;
 use App\Http\Repositories\Exceptions\ContaException;
-use App\Models\Conta;
 
 class TransferirContaUseCase extends BaseUseCase
 {
