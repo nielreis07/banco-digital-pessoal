@@ -2,8 +2,7 @@
 
 namespace App\Http\Repositories\Conta;
 
-use App\Http\Repositories\Conta\Interface\ContaRepositoryInterface;
-use App\Models\Conta;
+use App\Http\Repositories\Conta\Interface\ContaRepositoryInterface;use App\Models\Conta;
 
 class ContaRepository implements ContaRepositoryInterface
 {
@@ -17,6 +16,19 @@ class ContaRepository implements ContaRepositoryInterface
         $conta = Conta::with('pessoa')->where('pessoa_id', $id)->first();
 
         return $conta?->toArray() ?? [];
+    }
+
+    public function buscarConta($id, $where = []): array
+    {
+        $conta = Conta::with('pessoa')->where('id', $id);
+
+        if (is_array($where) && count($where) > 0) {
+            foreach ($where as $key => $value) {
+                $conta->where($key, $value);
+            }
+        };
+
+        return $conta?->first()?->toArray() ?? [];
     }
 
     public function criarConta(array $dados): array
@@ -68,4 +80,5 @@ class ContaRepository implements ContaRepositoryInterface
 
         return $conta->toArray();
     }
+
 }

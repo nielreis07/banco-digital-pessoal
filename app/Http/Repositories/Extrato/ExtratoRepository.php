@@ -11,4 +11,8 @@ class ExtratoRepository implements ExtratoRepositoryInterface
     {
         Extrato::create($dados);
     }
+    public function buscarExtratoPorIdConta(int $idConta): array
+    {
+        return Extrato::where('conta_id', $idConta)->get()->toArray();
+    }
 }

@@ -7,7 +7,10 @@ class ContaTransferenciaDto
     public function __construct(
         public readonly ?int $idContaOrdenador,
         public readonly ?int $idContaBeneficiario,
-        public readonly ?float $valor = null,
+        public readonly ?string $tipo,
+        public readonly ?string $numero,
+        public readonly ?string $agencia,
+        public readonly ?float $valor,
     ) {}
 
     public function toArray(): array

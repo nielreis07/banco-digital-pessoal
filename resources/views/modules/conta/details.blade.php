@@ -95,9 +95,12 @@
 
     <div class="card mt-4">
         <div class="card-body">
-            <form>
+            <form action="{{ route('conta.operacao-bancaria') }}" method="POST">
                 @csrf
                 @method('PUT')
+
+                <input type="hidden" name="idContaOrdenador" value="{{ $response?->conta?->id }}">
+                <input type="hidden" name="idPessoa" value="{{ $response?->conta?->pessoa?->id }}">
 
                 <div class="row mb-2">
                     <div class="col-md-12">
@@ -121,12 +124,13 @@
                     <div class="col-md-12">
                         <x-adminlte-select2 name="idContaBeneficiario" label="Conta Beneficiário" label-class="text-lightblue"
                             igroup-size="lg" data-placeholder="Selecione uma opção...">
-                            <option value="pessoas">Selecione</option>
-                            @foreach($response?->pessoas as $chave => $valor)
-                            <option value="{{ $chave }}"
-                                @selected(old('id', $valor?->id)==$chave)>
-                                {{ $valor?->nome }}
-                            </option>
+                            <option value="">Selecione</option>
+                            @foreach($response?->pessoas as $valor)
+                                @if (!empty($valor?->conta))
+                                    <option value="{{ $valor?->conta?->id }}">
+                                        {{ $valor?->nome }}
+                                    </option>
+                                @endif
                             @endforeach
                         </x-adminlte-select2>
                     </div>
@@ -137,8 +141,8 @@
                         <x-adminlte-select2 name="tipo" label="Tipo de conta" label-class="text-lightblue"
                             igroup-size="lg" data-placeholder="Selecione uma opção...">
                             <option value="">Selecione</option>
-                            <option value="corrente" @selected(old('conta', $response?->conta?->tipo ?? '')=='corrente' )>Corrente</option>
-                            <option value="poupanca" @selected(old('conta', $response?->conta?->tipo ?? '')=='poupanca' )>Poupança</option>
+                            <option value="corrente">Corrente</option>
+                            <option value="poupanca">Poupança</option>
                         </x-adminlte-select2>
                     </div>
 
@@ -148,8 +152,7 @@
                             class="form-control"
                             id="numero"
                             name="numero"
-                            value="{{ old('numero', $response?->conta?->numero ?? str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT)) }}"
-                            required>
+                            value="">
                     </div>
 
                     <div class="col-md-4 col-12">
@@ -158,8 +161,7 @@
                             class="form-control"
                             id="agencia"
                             name="agencia"
-                            value="{{ old('agencia', $response?->conta?->agencia ?? str_pad(rand(0, 9999), 4, '0', STR_PAD_LEFT)) }}"
-                            required>
+                            value="">
                     </div>
                 </div>
 
@@ -171,7 +173,7 @@
                             id="valor"
                             name="valor"
                             placeholder="R$ 0,00"
-                            value="{{ old('valor') }}">
+                            value="">
                         @error('valor')
                         <small class="text-danger">{{ $message }}</small>
                         @enderror
@@ -196,7 +198,6 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         moment.locale('pt-br');
-        console.log('Script carregado');
 
         const elementsToHide = document.querySelectorAll('.operacao-transferir');
         elementsToHide.forEach(el => el.style.display = 'none');

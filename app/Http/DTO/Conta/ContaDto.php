@@ -6,11 +6,11 @@ class ContaDto
 {
     public function __construct(
         public readonly ?int $id,
-        public readonly string $tipo,
-        public readonly string $numero,
+        public readonly ?string $tipo,
+        public readonly ?string $numero,
         public readonly ?int $pessoaId,
-        public readonly string $agencia,
-        public readonly string $codigoVerificador,
+        public readonly ?string $agencia,
+        public readonly ?string $codigoVerificador,
         public readonly ?float $saldo = null,
     ) {}
 

@@ -12,4 +12,5 @@ Route::group(['prefix' => 'conta'],
         Route::get('/{id}/deletar', [ContaController::class, 'deletar'])->name('conta.deletar');
         Route::get('/{id}/{pessoa_id}/exibir', [ContaController::class, 'exibir'])->name('conta.exibir');
         Route::post('/salvar', [ContaController::class, 'salvar'])->name('conta.salvar');
+        Route::put('/oeparacao-bancaria', [ContaController::class, 'operacaoBancaria'])->name('conta.operacao-bancaria');
     });

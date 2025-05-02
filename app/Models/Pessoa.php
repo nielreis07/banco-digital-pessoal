@@ -48,10 +48,13 @@ class Pessoa extends Model
         return $this->hasMany(Extrato::class, 'pessoa_id', 'id');
     }
 
-    // Mutadores e Acessores
+    public function conta()
+    {
+        return $this->hasOne(Conta::class, 'pessoa_id', 'id');
+    }   
+
     protected function cpf(): Attribute
     {
-        // Regex para formatar o CPF: 123.456.789-00
         return Attribute::make(
             get: fn ($value) => preg_replace('/(\d{3})(\d{3})(\d{3})(\d{2})/', '$1.$2.$3-$4', $value),
             set: fn ($value) => preg_replace('/\D/', '', $value),
@@ -68,7 +71,6 @@ class Pessoa extends Model
 
     protected function telefone(): Attribute
     {
-        // Regex para formatar o telefone: (12) 34567-8900
         return Attribute::make(
             get: fn ($value) => preg_replace('/(\d{2})(\d{5})(\d{4})/', '($1) $2-$3', $value),
             set: fn ($value) => preg_replace('/\D/', '', $value),

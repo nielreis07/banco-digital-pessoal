@@ -6,6 +6,7 @@ use App\Http\DTO\Conta\ContaTransferenciaDto;
 use App\Http\Repositories\Conta\Interface\ContaRepositoryInterface;
 use App\Http\Repositories\Extrato\Interface\ExtratoRepositoryInterface;
 use App\Http\UseCases\BaseUseCase;
+use App\Models\Extrato;
 use Illuminate\Support\Facades\DB;
 use App\Http\Repositories\Exceptions\ContaException;
 
@@ -23,17 +24,32 @@ class TransferirContaUseCase extends BaseUseCase
         }
 
         ContaException::validarContasDiferentes($input->idContaOrdenador, $input->idContaBeneficiario);
-
         try {
             DB::beginTransaction();
 
-            $contaOrdenador = $this->contaRepository->buscarContaPorIdPessoa($input->idContaOrdenador);
+            $contaOrdenador = $this->contaRepository->buscarConta($input->idContaOrdenador);
             ContaException::validarRegrasPersistencia($contaOrdenador, $input->valor);
             $contaOrdenador = $this->contaRepository->sacarValor($input->idContaOrdenador, $input->valor);
+            
+            $this->extratoRepository->registrarExtrato([
+                'pessoa_id' => $contaOrdenador['pessoa']['id'],
+                'conta_id' => $contaOrdenador['id'],
+                'operacao' => Extrato::OPERACAO_SAQUE,
+                'valor' => $contaOrdenador['saldo'],
+            ]);
 
-            $contaBeneficiario = $this->contaRepository->buscarContaPorIdPessoa($input->idContaBeneficiario);
+            $contaBeneficiario = $this->contaRepository->buscarConta(
+                $input->idContaBeneficiario,
+                ['tipo' => $input->tipo, 'numero' => $input->numero, 'agencia' => $input->agencia]
+            );
             ContaException::validarContaExiste($contaBeneficiario);
             $contaBeneficiario = $this->contaRepository->depositarValor($input->idContaBeneficiario, $input->valor);
+            $this->extratoRepository->registrarExtrato([
+                'pessoa_id' => $contaBeneficiario['pessoa']['id'],
+                'conta_id' => $contaBeneficiario['id'],
+                'operacao' => Extrato::OPERACAO_DEPOSITO,
+                'valor' => $contaBeneficiario['saldo'],
+            ]);
 
             DB::commit();
 

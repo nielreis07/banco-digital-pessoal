@@ -5,7 +5,7 @@ namespace App\Http\Repositories\Conta\Interface;
 interface ContaRepositoryInterface
 {
     public function listarContas(): array;
-
+    public function buscarConta(int $id, array $where = []): array;
     public function buscarContaPorIdPessoa($id): array;
 
     public function criarConta(array $dados): array;

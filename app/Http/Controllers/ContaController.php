@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\DTO\Conta\ContaDto;
 use App\Http\DTO\Conta\ContaTransferenciaDto;
+use App\Http\Requests\OperacaoBancariaRequest;
 use App\Http\UseCases\Conta\ConsultarContaUseCase;
+use App\Http\UseCases\Conta\DepositarContaUseCase;
 use App\Http\UseCases\Conta\ExcluirContaUseCase;
 use App\Http\UseCases\Conta\ListarContaUseCase;
+use App\Http\UseCases\Conta\SacarContaUseCase;
 use App\Http\UseCases\Conta\SalvarContaUseCase;
 use App\Http\UseCases\Conta\TransferirContaUseCase;
 use App\Traits\ResponseViewTrait;
@@ -21,6 +24,8 @@ class ContaController extends Controller
         private ConsultarContaUseCase $consultarContaUseCase,
         private ExcluirContaUseCase $excluirContaUseCase,
         private ListarContaUseCase $listarUseCase,
+        private SacarContaUseCase $sacarContaUseCase,
+        private DepositarContaUseCase $depositarContaUseCase,
         private TransferirContaUseCase $transferirContaUseCase,
     ) {}
 
@@ -84,19 +89,47 @@ class ContaController extends Controller
         ));
     }
 
-    public function transferencia(Request $request, $idOrdenador, $idBeneficiario) 
+    public function operacaoBancaria(OperacaoBancariaRequest $request)
     {
         try{
-            $contaTransferenciaDto = new ContaTransferenciaDto(
-                $idOrdenador,
-                $idBeneficiario,
-                $request->input('valor'),
+            $operacao = $request->input('operacao');
+
+            $dto = new ContaDto(
+                id: $request->input('idContaOrdenador'),
+                tipo: $request->input('tipo'),
+                numero: $request->input('numero'),
+                agencia: $request->input('agencia'),
+                codigoVerificador: $request->input('codigoVerificador'),
+                pessoaId: $request->input('idPessoa'),
+                saldo: $request->input('valor'),
             );
-            $conta = $this->transferirContaUseCase->execute($contaTransferenciaDto);
-            return redirect()->route('conta.exibir', ['id' => $conta['ordenador']['id'], 'pessoa_id' => $idBeneficiario['beneficiario']['id']])
-                ->with('success', 'Transferência realizada com sucesso!');
+            
+            if ($operacao == "saque") {
+               $this->sacarContaUseCase->execute($dto);
+            }
+
+            if ($operacao == "deposito") {
+                $this->depositarContaUseCase->execute($dto);
+            }
+
+            if ($operacao == "transferencia") {
+                $dto = new ContaTransferenciaDto(
+                    idContaOrdenador: $request->input('idContaOrdenador'),
+                    idContaBeneficiario: $request->input('idContaBeneficiario'),
+                    tipo: $request->input('tipo'),
+                    numero: $request->input('numero'),
+                    agencia: $request->input('agencia'),
+                    valor: $request->input('valor'),
+                );
+                    
+                $this->transferirContaUseCase->execute($dto);
+            }
+
+            return redirect()->route('conta.exibir', ['id' => $request->input('idContaOrdenador'), 'pessoa_id' => $request->input('idPessoa')])
+                ->with('success', 'Operação realizada com sucesso!');
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
     }
+
 }

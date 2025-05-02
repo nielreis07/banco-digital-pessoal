@@ -10,7 +10,7 @@ class PessoaRepository implements PessoaRepositoryInterface
 {
     public function listarPessoas(array $where = []): array
     {
-        $query = Pessoa::with('usuario');
+        $query = Pessoa::with('usuario', 'conta');
         if (!empty($where)) {
             $query->where(function ($query) use ($where) {
                 foreach ($where as $condition) {
