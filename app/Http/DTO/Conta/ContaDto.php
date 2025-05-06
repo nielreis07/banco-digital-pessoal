@@ -10,8 +10,7 @@ class ContaDto
         public readonly ?string $numero,
         public readonly ?int $pessoaId,
         public readonly ?string $agencia,
-        public readonly ?string $codigoVerificador,
-        public readonly ?float $saldo = null,
+        public readonly ?float $saldo = 0.0,
     ) {}
 
     public function toArray(): array
@@ -22,7 +21,6 @@ class ContaDto
             'numero' => $this->numero,
             'pessoa_id' => $this->pessoaId,
             'agencia' => $this->agencia,
-            'codigo_verificador' => $this->codigoVerificador,
             'saldo' => $this->saldo,
         ];
     }

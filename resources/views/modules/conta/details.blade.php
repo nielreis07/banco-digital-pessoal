@@ -55,13 +55,6 @@
 
                 <div class="col-md-4 mb-3">
                     <div class="card p-2">
-                        <label for="codigo_verificador" class="form-label text-lightblue">Código Verificador</label>
-                        <div>{{ $response?->conta?->codigo_verificador ?? str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT) }}</div>
-                    </div>
-                </div>
-
-                <div class="col-md-4 mb-3">
-                    <div class="card p-2">
                         <label for="tipo" class="form-label text-lightblue">Tipo</label>
                         <div>{{ $response?->conta?->tipo_descricao ?? '-' }}</div>
                     </div>
@@ -188,7 +181,73 @@
             </form>
         </div>
     </div>
+    <div class="card mt-4">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2>Extrato</h2>
+        </div>
+
+        <div class="row">
+            @if (isset($response?->conta?->pessoa))
+                <div class="col-md-4 mb-3">
+                    <div class="card p-2">
+                        <label class="form-label text-lightblue">Nome</label>
+                        <div>{{ $response?->conta?->pessoa?->nome ?? '-' }}</div>
+                    </div>
+                </div>
+            @endif
+
+            <div class="col-md-4 mb-3">
+                <div class="card p-2">
+                    <label class="form-label text-lightblue">Conta Beneficiário</label>
+                    <div>
+                        {{ $response?->contaBeneficiario?->pessoa?->nome ?? '-' }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label for="valor" class="form-label text-lightblue">Valor Transferido</label>
+                <input type="text"
+                    class="form-control"
+                    id="valor"
+                    name="valor"
+                    placeholder="R$ 0,00"
+                    value="{{ number_format($response?->valor_transferido ?? 0, 2, ',', '.') }}"
+                    readonly
+                    style="background-color:rgb(255, 255, 255);">
+                @error('valor')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <div class="card p-2">
+                    <label for="saldo" class="form-label text-lightblue">Saldo Atual</label>
+                    <input type="text"
+                        class="form-control"
+                        id="saldo"
+                        name="saldo"
+                        placeholder="R$ 0,00"
+                        value="{{ old('saldo', $response?->conta?->saldo ?? '0,00') }}"
+                        readonly
+                        style="background-color:rgb(255, 255, 255);">
+                    @error('saldo')
+                        <small class="text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-md-12 text-right">
+                <button class="btn btn-info" onclick="window.print()">Imprimir</button>
+            </div>
+        </div>
+    </div>
 </div>
+
+</div>
+    </div>
 @endsection
 
 @section('plugins.TempusDominusBs4', true)

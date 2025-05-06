@@ -64,16 +64,6 @@
 
                         <div class="row">
                             <div class="col-md-4">
-                                <label for="codigo_verificador" class="form-label text-lightblue">CV</label>
-                                <input type="text"
-                                    class="form-control"
-                                    id="codigo_"
-                                    name="codigo_verificador"
-                                    value="{{ old('codigo_verificador', $response?->conta?->codigoVerificador ?? str_pad(rand(0, 999), 3, '0', STR_PAD_LEFT)) }}"
-                                    required>
-                            </div>
-
-                            <div class="col-md-4">
                                 <x-adminlte-select2 name="tipo" label="Tipo de conta" label-class="text-lightblue"
                                     igroup-size="lg" data-placeholder="Selecione uma opção...">
                                     <option value="">Selecione</option>

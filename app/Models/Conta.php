@@ -20,7 +20,6 @@ class Conta extends Model
         'numero',
         'saldo',
         'agencia',
-        'codigo_verificador',
     ];
 
     protected $with = ['pessoa', 'extrato'];

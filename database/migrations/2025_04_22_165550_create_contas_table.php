@@ -17,7 +17,6 @@ return new class() extends Migration
             $table->enum('tipo', ['corrente', 'poupanca']);
             $table->char('numero', 6)->unique();
             $table->char('agencia', 4)->unique();
-            $table->char('codigo_verificador', 3)->unique();
             $table->decimal('saldo', 10, 2)->default(0);
             $table->timestamps();
             $table->softDeletes();

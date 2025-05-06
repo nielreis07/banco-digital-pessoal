@@ -67,7 +67,6 @@ class ContaController extends Controller
                 numero: $request->input('numero'),
                 pessoaId: $request->input('pessoa_id'),
                 agencia: $request->input('agencia'),
-                codigoVerificador: $request->input('codigo_verificador'),
             );
 
             $this->salvarContaUseCase->execute($contaDto);
@@ -99,7 +98,6 @@ class ContaController extends Controller
                 tipo: $request->input('tipo'),
                 numero: $request->input('numero'),
                 agencia: $request->input('agencia'),
-                codigoVerificador: $request->input('codigoVerificador'),
                 pessoaId: $request->input('idPessoa'),
                 saldo: $request->input('valor'),
             );
