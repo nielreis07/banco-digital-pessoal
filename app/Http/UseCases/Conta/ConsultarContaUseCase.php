@@ -25,7 +25,6 @@ class ConsultarContaUseCase extends BaseUseCase
             return [
                 'pessoas' => $pessoas,
                 'conta' => $conta,
-                // 'extrato' => $extrato,
             ];
         }
 

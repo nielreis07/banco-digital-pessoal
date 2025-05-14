@@ -199,30 +199,6 @@
 
             <div class="col-md-4 mb-3">
                 <div class="card p-2">
-                    <label class="form-label text-lightblue">Conta Beneficiário</label>
-                    <div>
-                        {{ $response?->contaBeneficiario?->pessoa?->nome ?? '-' }}
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-4 mb-3">
-                <label for="valor" class="form-label text-lightblue">Valor Transferido</label>
-                <input type="text"
-                    class="form-control"
-                    id="valor"
-                    name="valor"
-                    placeholder="R$ 0,00"
-                    value="{{ number_format($response?->valor_transferido ?? 0, 2, ',', '.') }}"
-                    readonly
-                    style="background-color:rgb(255, 255, 255);">
-                @error('valor')
-                    <small class="text-danger">{{ $message }}</small>
-                @enderror
-            </div>
-
-            <div class="col-md-4 mb-3">
-                <div class="card p-2">
                     <label for="saldo" class="form-label text-lightblue">Saldo Atual</label>
                     <input type="text"
                         class="form-control"

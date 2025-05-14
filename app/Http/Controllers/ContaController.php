@@ -8,6 +8,7 @@ use App\Http\Requests\OperacaoBancariaRequest;
 use App\Http\UseCases\Conta\ConsultarContaUseCase;
 use App\Http\UseCases\Conta\DepositarContaUseCase;
 use App\Http\UseCases\Conta\ExcluirContaUseCase;
+use App\Http\UseCases\Conta\ExtratoUseCase;
 use App\Http\UseCases\Conta\ListarContaUseCase;
 use App\Http\UseCases\Conta\SacarContaUseCase;
 use App\Http\UseCases\Conta\SalvarContaUseCase;
@@ -27,6 +28,7 @@ class ContaController extends Controller
         private SacarContaUseCase $sacarContaUseCase,
         private DepositarContaUseCase $depositarContaUseCase,
         private TransferirContaUseCase $transferirContaUseCase,
+        private ExtratoUseCase $extratoUseCase,
     ) {}
 
     public function listar()
@@ -80,9 +82,10 @@ class ContaController extends Controller
     public function exibir($id, $pessoaId)
     {
         ['conta' => $conta, 'pessoas' => $pessoas] = $this->consultarContaUseCase->execute($pessoaId);
+        ['extrato' => $extrato] = $this->extratoUseCase->execute($id);
 
         return view('modules.conta.details', $this->success(
-            compact('conta', 'pessoas'),
+            compact('conta', 'pessoas', 'extrato'),
             '',
             200,
         ));
