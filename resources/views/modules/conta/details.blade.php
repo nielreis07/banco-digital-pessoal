@@ -3,6 +3,7 @@
 @section('title', 'Usuário')
 
 @section('content')
+
 <div class="container pt-4">
 
     @if (session('success'))
@@ -187,38 +188,20 @@
             <h2>Extrato</h2>
         </div>
 
-        <div class="row">
-            @if (isset($response?->conta?->pessoa))
-                <div class="col-md-4 mb-3">
-                    <div class="card p-2">
-                        <label class="form-label text-lightblue">Nome</label>
-                        <div>{{ $response?->conta?->pessoa?->nome ?? '-' }}</div>
-                    </div>
-                </div>
-            @endif
-
-            <div class="col-md-4 mb-3">
-                <div class="card p-2">
-                    <label for="saldo" class="form-label text-lightblue">Saldo Atual</label>
-                    <input type="text"
-                        class="form-control"
-                        id="saldo"
-                        name="saldo"
-                        placeholder="R$ 0,00"
-                        value="{{ old('saldo', $response?->conta?->saldo ?? '0,00') }}"
-                        readonly
-                        style="background-color:rgb(255, 255, 255);">
-                    @error('saldo')
-                        <small class="text-danger">{{ $message }}</small>
-                    @enderror
-                </div>
-            </div>
-        </div>
-        <div class="row mt-4">
-            <div class="col-md-12 text-right">
-                <button class="btn btn-info" onclick="window.print()">Imprimir</button>
-            </div>
-        </div>
+          <div class="card">
+      <div class="card-body">
+          <x-adminlte-datatable id="table1" :heads="$response->heads">
+              @foreach($response->extrato as $row)
+                  <tr>
+                      @foreach($row as $cell)
+                          <td>{!! $cell !!}</td>
+                      @endforeach
+                  </tr>
+              @endforeach
+          </x-adminlte-datatable>
+      </div>
+    </div>
+        
     </div>
 </div>
 

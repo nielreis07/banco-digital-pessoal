@@ -82,10 +82,10 @@ class ContaController extends Controller
     public function exibir($id, $pessoaId)
     {
         ['conta' => $conta, 'pessoas' => $pessoas] = $this->consultarContaUseCase->execute($pessoaId);
-        ['extrato' => $extrato] = $this->extratoUseCase->execute($id);
+        ['heads' => $heads, 'extrato' => $extrato] = $this->extratoUseCase->execute($id);
 
         return view('modules.conta.details', $this->success(
-            compact('conta', 'pessoas', 'extrato'),
+            compact('conta', 'pessoas', 'extrato', 'heads'),
             '',
             200,
         ));

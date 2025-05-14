@@ -20,7 +20,19 @@ class ExtratoUseCase extends BaseUseCase
             throw new \Exception('Extrato não encontrado', 404);
         }
 
-        return ['extrato' => $extrato];
+        $extrato = array_map(function ($item) {
+            return [
+                'id' => $item['id'],
+                'operacao' => $item['operacao'],
+                'valor' => $item['valor'],
+            ];
+        }, $extrato);
+
+        return ['heads' => [
+            'id',
+            'operacao',
+            'valor',
+        ],'extrato' => $extrato];
 
     }
 }
